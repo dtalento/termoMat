@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>termoMat</title>
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script> 
+
+    </head>
+    <body>
+        <h1>termoMat</h1>
+        
+        <button py-click="testBtn()">Click Me!</button>
+        <div id="test-output"></div>>
+
+        <section class="pyscript">
+            <py-config>
+                packages = [
+                    "numpy",
+                    "matplotlib",
+                    "pyromat"
+                ]
+            </py-config>
+
+            <script type="py">
+                import matplotlib.pyplot as plt
+                import numpy as np
+                import pyromat as pm
+                from pyscript import display
+
+                
+            
+                def testBtn():
+                    display("hello", target='test-output')
+
+                pm.config['unit_pressure'] = 'kPa' 
+
+                agua = pm.get('mp.H2O')
+            </script>
+        </section>
+    </body>
+</html>
