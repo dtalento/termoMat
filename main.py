@@ -35,5 +35,5 @@ def testBtn():
     fixedValue = float(document.querySelector('#fixed-value').value)
 
     p = np.linspace(rangeMin, rangeMax, step)
-    dataContainer.innerHT = formatOutput(p, p)
+    dataContainer.innerHTML = formatOutput(p, p)
     # display(fig1, target='test-output', append=False)
