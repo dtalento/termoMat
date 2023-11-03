@@ -20,9 +20,9 @@ def formatOutput(vec1, vec2):
     output = "#\tP(kPa)"
     i = 0
     for value in vec1:
-        newrow = f"\nN = {i}\tN + 1 = {i+1}"
+        i += 1
+        newrow = f"\nN = {i}\t\t\tp = {value}"
         output += newrow
-        console.log(newrow)
     return str(output)
 
 def testBtn():
