@@ -9,10 +9,34 @@
     </head>
     <body>
         <h1>termoMat</h1>
-        
-        <button py-click="testBtn">Click Me!</button>
-        <div id="test-output"></div>>
+        <div>
+            <select name="ppty-variable" id="ppty-variable">
+                <option value="T">T (°C)</option>
+                <option value="p">p (kPa)</option>
+            </select>
+            <input type="number" id="range-min">
+            <input type="number" id="range-max">
+            <input type="number" id="step">
+        </div><br>
+        <div>
+            <select name="ppty-fixed" id="ppty-fixed">
+                <option value="T">T (°C)</option>
+                <option value="p">p (kPa)</option>
+            </select>
+            <input type="number" id="fixed-value">
+        </div><br>
+        <button py-click="testBtn()">Click Me!</button>
+        <div id="test-output"></div>
 
+        <section class="pyscript">
+            <py-config>
+                packages = [
+                    "numpy",
+                    "matplotlib",
+                    "pyromat"
+                ]
+            </py-config>
+        </section>
         <script type="py" src="./main.py" config="./pyscript.json"></script>
     </body>
 </html>
