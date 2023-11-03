@@ -26,15 +26,27 @@ def formatOutput(varName, fixedName, vec1, fixedValue):
         output += newrow
     return str(output)
 
-def testBtn():
-    pptyVariable = document.querySelector('#ppty-variable')
-    pptyFixed = document.querySelector('#ppty-fixed')
+def getInputs():
+    pptyVariable = document.querySelector('#ppty-variable').value
+    pptyFixed = document.querySelector('#ppty-fixed').value
 
     rangeMax = float(document.querySelector('#range-max').value)
     rangeMin = float(document.querySelector('#range-min').value)
     step = int(document.querySelector('#step').value)
     fixedValue = float(document.querySelector('#fixed-value').value)
+    
+    inputData = {'varName':pptyVariable, 'fixedName':pptyFixed, 'max':rangeMax, 'min':rangeMin, 'step':step, 'fixedValue':fixedValue}
+    return inputData
+def testBtn():
+    try:
+        input = getInputs()
+    except:
+        dataContainer.innerHTML = "<p>Invalid Input</p>"
+    else:    
+        rangeMin = input['min']
+        rangeMax = input['max']
+        step = input['step']
 
-    p = np.linspace(rangeMin, rangeMax, step)
-    dataContainer.innerHTML = formatOutput("p", "T", p, fixedValue)
-    # display(fig1, target='test-output', append=False)
+        p = np.linspace(rangeMin, rangeMax, step)
+        dataContainer.innerHTML = formatOutput(input['varName'], input['fixedName'], p, input['fixedValue'])
+        # display(fig1, target='test-output', append=False)
