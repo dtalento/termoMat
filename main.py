@@ -8,8 +8,8 @@ pm.config['unit_pressure'] = 'kPa'
 pm.config['unit_temperature'] = 'K'
 sust = pm.get('mp.H2O')
 
-outputDiv = document.querySelector('#test-output')
-outputDiv.innerText = 'Choose Things'
+dataContainer = document.querySelector('#data-container')
+dataContainer.innerText = 'Choose Things'
 
 # p = np.linspace(rangeMin, rangeMax, 100)
 # h = sust.h(p=p, x=1)
@@ -27,7 +27,7 @@ def formatOutput(vec1, vec2):
 
 def testBtn():
     pptyVariable = document.querySelector('#ppty-variable')
-    pptyFixed = pptyVariable = document.querySelector('#ppty-fixed')
+    pptyFixed = document.querySelector('#ppty-fixed')
 
     rangeMax = float(document.querySelector('#range-max').value)
     rangeMin = float(document.querySelector('#range-min').value)
@@ -35,5 +35,5 @@ def testBtn():
     fixedValue = float(document.querySelector('#fixed-value').value)
 
     p = np.linspace(rangeMin, rangeMax, step)
-    outputDiv.innerText = formatOutput(p, p)
+    dataContainer.innerText = formatOutput(p, p)
     # display(fig1, target='test-output', append=False)
