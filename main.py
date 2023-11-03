@@ -17,11 +17,11 @@ fig1, ax1 = plt.subplots()
 # ax1.plot(h, p)
 
 def formatOutput(vec1, vec2):
-    output = "#\tP(kPa)"
+    output = "<tr><th>#</th> <th>P(kPa)</th></tr>"
     i = 0
     for value in vec1:
         i += 1
-        newrow = f"\nN = {i}\t\t\tp = {value}"
+        newrow = f"<tr><td>{i}</td> <td>{value}</td></tr>"
         output += newrow
     return str(output)
 
@@ -35,5 +35,5 @@ def testBtn():
     fixedValue = float(document.querySelector('#fixed-value').value)
 
     p = np.linspace(rangeMin, rangeMax, step)
-    dataContainer.innerText = formatOutput(p, p)
+    dataContainer.innerHT = formatOutput(p, p)
     # display(fig1, target='test-output', append=False)
