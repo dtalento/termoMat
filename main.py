@@ -16,15 +16,22 @@ dataContainer.innerText = 'Choose Things'
 fig1, ax1 = plt.subplots()
 # ax1.plot(h, p)
 
-def formatOutput(varName, fixedName, vec1, fixedValue):
-    output = f"<theader><th colspan=4>{fixedName} = {fixedValue}</th></theader>"
-    output += "<tr><th>-</th> <th>P(kPa)</th> <th>-</th><th>-</th></tr>"
+def formatOutput(output):
+    varName =   output['varName']
+    varValues = output['varValues']
+    varUnit =   output['varUnit']
+    fixedName = output['fixedName']
+    fixedValue =output['fixedValue']
+    fixedUnit = output['fixedUnit']
+    
+    formattedOutput = f"<theader><th colspan=4>{fixedName} ({fixedUnit}) = {fixedValue}</th></theader>"
+    formattedOutput += f"<tr><th>-</th> <th>{varName}({varUnit})</th> <th>-</th><th>-</th></tr>"
     i = 0
-    for value in vec1:
+    for value in varValues:
         i += 1
         newrow = f"<tr><td>-</td> <td>{value}</td> <td>-</td> <td>-</td> </tr>"
-        output += newrow
-    return str(output)
+        formattedOutput += newrow
+    return str(formattedOutput)
 
 def getInputs():
     pptyVariable = document.querySelector('#ppty-variable').value
@@ -35,7 +42,9 @@ def getInputs():
     step = int(document.querySelector('#step').value)
     fixedValue = float(document.querySelector('#fixed-value').value)
     
-    inputData = {'varName':pptyVariable, 'fixedName':pptyFixed, 'max':rangeMax, 'min':rangeMin, 'step':step, 'fixedValue':fixedValue}
+    unitDict = {'T':'°C', 'p':'kPa', 'u':'kJ/kg', 'h':'kJ/kg', 's':'kJ/(kgK)'}
+
+    inputData = {'varName':pptyVariable, 'varUnit':unitDict[pptyVariable], 'fixedName':pptyFixed, 'fixedUnit':unitDict[pptyFixed], 'max':rangeMax, 'min':rangeMin, 'step':step, 'fixedValue':fixedValue}
     return inputData
 def testBtn():
     try:
@@ -47,6 +56,7 @@ def testBtn():
         rangeMax = input['max']
         step = input['step']
 
-        p = np.linspace(rangeMin, rangeMax, step)
-        dataContainer.innerHTML = formatOutput(input['varName'], input['fixedName'], p, input['fixedValue'])
+        output = input.copy()
+        output['varValues'] = np.linspace(rangeMin, rangeMax, step)
+        dataContainer.innerHTML = formatOutput(output)
         # display(fig1, target='test-output', append=False)
