@@ -14,8 +14,11 @@
                 <option value="T">T (°C)</option>
                 <option value="p">p (kPa)</option>
             </select>
+            <label for="range-min">Valor Minimo:</label>
             <input type="number" id="range-min">
+            <label for="range-max">Valor Máximo:</label>
             <input type="number" id="range-max">
+            <label for="step">Número de valores:</label>
             <input type="number" id="step">
         </div><br>
         <div>
@@ -23,6 +26,7 @@
                 <option value="T">T (°C)</option>
                 <option value="p">p (kPa)</option>
             </select>
+            <label for="fixed-value">Valor:</label>
             <input type="number" id="fixed-value">
         </div><br>
         <button py-click="testBtn()">Click Me!</button>
