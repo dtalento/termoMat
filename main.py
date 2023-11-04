@@ -4,6 +4,7 @@ import pyromat as pm
 from js import console, window, document # type: ignore
 from pyscript import display # type: ignore
 
+unitDict = {'T':'°C', 'p':'kPa', 'u':'kJ/kg', 'h':'kJ/kg', 's':'kJ/(kgK)'}
 pm.config['unit_pressure'] = 'kPa'
 pm.config['unit_temperature'] = 'C'
 sust = pm.get('mp.H2O')
@@ -16,20 +17,26 @@ dataContainer.innerText = 'Choose Things'
 fig1, ax1 = plt.subplots()
 # ax1.plot(h, p)
 
-def formatOutput(output):
-    varName =   output['varName']
-    varValues = output['varValues']
-    varUnit =   output['varUnit']
-    fixedName = output['fixedName']
-    fixedValue =output['fixedValue']
-    fixedUnit = output['fixedUnit']
+def formatOutput(input, outNames, DATA):
+    varUnit =   input['varUnit']
+    fixedName = input['fixedName']
+    fixedValue =input['fixedValue']
+    fixedUnit = input['fixedUnit']
     
-    formattedOutput = f"<theader><th colspan=4>{fixedName} ({fixedUnit}) = {fixedValue}</th></theader>"
-    formattedOutput += f"<tr><th>-</th> <th>{varName}({varUnit})</th> <th>-</th><th>-</th></tr>"
-    i = 0
-    for value in varValues:
-        i += 1
-        newrow = f"<tr><td>-</td> <td>{value}</td> <td>-</td> <td>-</td> </tr>"
+    step = input['step']
+
+    formattedOutput = f"<theader><th colspan=4>{fixedName} = {fixedValue} {fixedUnit}</th></theader>"
+    
+    formattedOutput += f"<tr>"
+    for name in outNames:
+        formattedOutput += f"<th>{name}({unitDict[name]})"
+    formattedOutput += "</tr>"
+    
+    for i in range(step):
+        newrow = "<tr>"
+        for name in outNames:
+            newrow += f"<td>{DATA[name][i]}</td>"
+        newrow += "</tr>"
         formattedOutput += newrow
     return str(formattedOutput)
 
@@ -67,9 +74,9 @@ def getVarP(p, varName, min, max, step):
             raise Exception('Invalid Input')
         case 'T':
             T = np.linspace(min, max, step)
-            u = sust.e(T=T, p=p)
-            h = sust.h(T=T, p=p)
-            s = sust.s(T=T, p=p)
+            u = sust.e(p=p, T=T)
+            h = sust.h(p=p, T=T)
+            s = sust.s(p=p, T=T)
         case 'u':
             u = np.linspace(min, max, step)
             T = sust.T(p=p, e=u)
@@ -87,8 +94,7 @@ def getVarP(p, varName, min, max, step):
             h = sust.h(p=p, s=s)
         case other:
             raise Exception('PYROMAT ERROR')   
-    return p, u, h, s
-
+    return T, u, h, s
 
 def getData(input):
     varName =   input['varName']
@@ -123,8 +129,6 @@ def getInputs():
     step = int(document.querySelector('#step').value)
     fixedValue = float(document.querySelector('#fixed-value').value)
     
-    unitDict = {'T':'°C', 'p':'kPa', 'u':'kJ/kg', 'h':'kJ/kg', 's':'kJ/(kgK)'}
-
     inputData = {'varName':pptyVariable, 'varUnit':unitDict[pptyVariable], 'fixedName':pptyFixed, 'fixedUnit':unitDict[pptyFixed], 'max':rangeMax, 'min':rangeMin, 'step':step, 'fixedValue':fixedValue}
     return inputData
 def testBtn():
@@ -138,6 +142,10 @@ def testBtn():
         except Exception as error:
            dataContainer.innerHTML = error
         else:
-            # dataContainer.innerHTML = formatOutput(output)
+            outNames = ['T', 'p', 'u', 'h', 's']
+            outNames.remove(input['varName'])
+            outNames.remove(input['fixedName'])
+            outNames.insert(0, input['varName'])
+            dataContainer.innerHTML = formatOutput(input, outNames, DATA)
             # display(fig1, target='test-output', append=False)
             pass
