@@ -13,6 +13,9 @@
             <select name="ppty-variable" id="ppty-variable">
                 <option value="T">T (°C)</option>
                 <option value="p">p (kPa)</option>
+                <option value="u">u (kJ/kg)</option>
+                <option value="h">h (kJ/kg)</option>
+                <option value="s">s (kJ/(kgK))</option>
             </select>
             <label for="range-min">Valor Minimo:</label>
             <input type="number" id="range-min">
@@ -25,6 +28,9 @@
             <select name="ppty-fixed" id="ppty-fixed">
                 <option value="T">T (°C)</option>
                 <option value="p">p (kPa)</option>
+                <option value="u">u (kJ/kg)</option>
+                <option value="h">h (kJ/kg)</option>
+                <option value="s">s (kJ/(kgK))</option>
             </select>
             <label for="fixed-value">Valor:</label>
             <input type="number" id="fixed-value">
@@ -37,7 +43,7 @@
                 packages = [
                     "numpy",
                     "matplotlib",
-                    "pyromat"
+                    "https://dtalento.github.io/termoMat/pkg/PYroMat-2.2.4-py3-none-any.whl"
                 ]
             </py-config>
         </section>

@@ -84,17 +84,101 @@ def getVarP(p, varName, min, max, step):
             s = sust.s(p=p, e=u)
         case 'h':
             h = np.linspace(min, max, step)
-            T = sust.p(p=p, h=h)
+            T = sust.T(p=p, h=h)
             u = sust.e(p=p, h=h)
             s = sust.s(p=p, h=h)
         case 's':
             s = np.linspace(min, max, step)
-            T = sust.p(p=p, s=s)
+            T = sust.T(p=p, s=s)
             u = sust.e(p=p, s=s)
             h = sust.h(p=p, s=s)
         case other:
             raise Exception('PYROMAT ERROR')   
     return T, u, h, s
+
+def getVarU(u, varName, min, max, step):
+    match varName:
+        case 'u':
+            raise Exception('Invalid Input')
+        case 'T':
+            T = np.linspace(min, max, step)
+            p = sust.p(e=u, T=T)
+            h = sust.h(e=u, T=T)
+            s = sust.s(e=u, T=T)
+        case 'p':
+            p = np.linspace(min, max, step)
+            T = sust.T(e=u, p=p)
+            h = sust.h(e=u, p=p)
+            s = sust.s(e=u, p=p)
+        case 'u':
+            h = np.linspace(min, max, step)
+            T = sust.T(e=u, h=h)
+            p = sust.p(e=u, h=h)
+            s = sust.s(e=u, h=h)
+        case 's':
+            s = np.linspace(min, max, step)
+            T = sust.T(e=u, s=s)
+            p = sust.p(e=u, s=s)
+            h = sust.h(e=u, s=s)
+        case other:
+            raise Exception('PYROMAT ERROR')   
+    return T, p, h, s
+
+def getVarH(h, varName, min, max, step):
+    match varName:
+        case 'h':
+            raise Exception('Invalid Input')
+        case 'T':
+            T = np.linspace(min, max, step)
+            p = sust.p(h=h, T=T)
+            u = sust.e(h=h, T=T)
+            s = sust.s(h=h, T=T)
+        case 'p':
+            p = np.linspace(min, max, step)
+            T = sust.T(h=h, p=p)
+            u = sust.e(h=h, p=p)
+            s = sust.s(h=h, p=p)
+        case 'u':
+            u = np.linspace(min, max, step)
+            T = sust.T(h=h, e=u)
+            h = sust.h(h=h, e=u)
+            s = sust.s(h=h, e=u)
+        case 's':
+            s = np.linspace(min, max, step)
+            T = sust.T(h=h, s=s)
+            p = sust.p(h=h, s=s)
+            u = sust.e(h=h, s=s)
+        case other:
+            raise Exception('PYROMAT ERROR')   
+    return T, p, u, s
+
+def getVarS(s, varName, min, max, step):
+    match varName:
+        case 's':
+            raise Exception('Invalid Input')
+        case 'T':
+            T = np.linspace(min, max, step)
+            p = sust.p(s=s, T=T)
+            u = sust.e(s=s, T=T)
+            h = sust.h(s=s, T=T)
+        case 'p':
+            p = np.linspace(min, max, step)
+            T = sust.T(s=s, p=p)
+            u = sust.e(s=s, p=p)
+            h = sust.h(s=s, p=p)
+        case 'u':
+            u = np.linspace(min, max, step)
+            T = sust.T(s=s, e=u)
+            p = sust.p(s=s, e=u)
+            h = sust.h(s=s, e=u)
+        case 'h':
+            h = np.linspace(min, max, step)
+            T = sust.T(s=s, h=h)
+            p = sust.p(s=s, h=h)
+            u = sust.e(s=s, h=h)
+        case other:
+            raise Exception('PYROMAT ERROR')   
+    return T, p, u, h
 
 def getData(input):
     varName =   input['varName']
@@ -113,6 +197,15 @@ def getData(input):
         case 'p':
             p = fixedValue*np.ones(step)
             T, u, h, s = getVarP(fixedValue, varName, min, max, step)
+        case 'u':
+            u = fixedValue*np.ones(step)
+            T, p, h, s = getVarU(fixedValue, varName, min, max, step)
+        case 'h':
+            s = fixedValue*np.ones(step)
+            T, p, u, s = getVarH(fixedValue, varName, min, max, step)
+        case 's':
+            s = fixedValue*np.ones(step)
+            T, p, u, h = getVarS(fixedValue, varName, min, max, step)
         case other:
             raise Exception('INVALID PROPERTY')
 
@@ -146,6 +239,6 @@ def testBtn():
             outNames.remove(input['varName'])
             outNames.remove(input['fixedName'])
             outNames.insert(0, input['varName'])
-            dataContainer.innerHTML = formatOutput(input, outNames, DATA)
+            dataContainer.innerHTML = formatOutput(input, outNames, DATA) + f'<p>{sust.T_h(2000, p=100)}  {pm.__version__}</p>'
             # display(fig1, target='test-output', append=False)
             pass
