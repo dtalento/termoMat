@@ -239,6 +239,6 @@ def testBtn():
             outNames.remove(input['varName'])
             outNames.remove(input['fixedName'])
             outNames.insert(0, input['varName'])
-            dataContainer.innerHTML = formatOutput(input, outNames, DATA) + f'<p>{sust.T_h(2000, p=100)}  {pm.__version__}</p>'
+            dataContainer.innerHTML = formatOutput(input, outNames, DATA)
             # display(fig1, target='test-output', append=False)
             pass
